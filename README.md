@@ -51,9 +51,9 @@ The guidance emphasizes pragmatic changes (e.g., connection reuse, short timeout
 
 ### Application
 
-- [1 — Separate Handler from Business Logic](./docs/separate-handler.md)
-- [2 — Minify Packages](./docs/minify-packages.md)
-- [3 — Memory Sizing and CPU](./docs/memory-sizing.md)
+- [1 - Separate Handler from Business Logic](./docs/separate-handler.md)
+- [2 - Minify Packages](./docs/minify-packages.md)
+- [3 - Memory Sizing and CPU](./docs/memory-sizing.md)
 - [4 - Graceful error & timeout handling](./docs/graceful-error-timeout-handling.md)
 - [5 - Local simulation](./docs/local-simulation.md)
 - [6 - Monitor & log](./docs/monitor-and-log.md)
@@ -62,9 +62,9 @@ The guidance emphasizes pragmatic changes (e.g., connection reuse, short timeout
 
 ### Database
 
-- 7 — Connection Management (Caching)
+- 7 - Connection Management (Caching)
 - 8 - Native driver
-- 9 — Max Idle Time
+- 9 - Max Idle Time
 - 10 - Indexed queries & projection
 - 11 - Limit payloads / response
 - 12 - $currentOp & diagnostics
@@ -76,7 +76,7 @@ The guidance emphasizes pragmatic changes (e.g., connection reuse, short timeout
 
 - 14 - Environment variables & Secrets
 - 15 - Function URLs & API Gateway
-- 16 — Provisioned Concurrency
+- 16 - Provisioned Concurrency
 - 17 - Warm-up & Provisioned concurrency
 - 18 - Short timeouts(./docs/short-timeouts.md)
 
