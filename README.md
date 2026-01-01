@@ -12,6 +12,10 @@ Date: 12/25
 
 This document captures practical best practices for building and operating AWS Lambda functions. It is intended for engineers and SREs working on serverless TypeScript services who want reliable, cost-effective, and maintainable Lambdas.
 
+AWS Lambda, Google Cloud Functions, and Azure Functions are event-driven, ephemeral compute environments offered by major cloud providers. They run code in short-lived execution contexts without requiring developers to provision or manage servers, automatically handling scaling, availability, and underlying infrastructure while encouraging stateless application design.
+
+This guide focuses on AWS Lambda, but the principles and recommendations apply universally across serverless platforms.
+
 ### Goals
 
 - **Purpose**
