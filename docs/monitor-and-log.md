@@ -1,5 +1,7 @@
 # Monitor & Log
 
+[Main Menu](../README.md)
+
 ## Why it matters
 
 - Observability is critical for troubleshooting production issues

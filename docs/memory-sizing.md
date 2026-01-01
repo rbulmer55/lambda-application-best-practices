@@ -1,5 +1,7 @@
 # Memory Sizing and CPU
 
+[Main Menu](../README.md)
+
 ## Why it matters
 
 - In AWS Lambda, memory size directly controls available CPU.

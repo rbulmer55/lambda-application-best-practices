@@ -82,7 +82,7 @@ The guidance emphasizes pragmatic changes (e.g., connection reuse, short timeout
 
 ## Notes on Design Philosophy
 
--AWS Lambda (and other FaaS platforms) are ephemeral compute environments
+- AWS Lambda (and other FaaS platforms) are ephemeral compute environments
 
 - Functions should be:
 

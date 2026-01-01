@@ -1,5 +1,7 @@
 # Minify Packages
 
+[Main Menu](../README.md)
+
 ## Why it matters
 
 Smaller deployment packages:

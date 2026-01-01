@@ -1,5 +1,7 @@
 # Graceful Error & Timeout Handling
 
+[Main Menu](../README.md)
+
 ## Why it matters
 
 - Prevents silent or partial failures

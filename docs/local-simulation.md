@@ -1,5 +1,7 @@
 # Local Simulation
 
+[Main Menu](../README.md)
+
 ## Why it matters
 
 - Reduces feedback and iteration time during development
