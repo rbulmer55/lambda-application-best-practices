@@ -1,6 +1,6 @@
 # Memory Sizing and CPU
 
-[Main Menu](../README.md)
+[Main Menu](../README.md#quick-links--optimisations)
 
 ## Why it matters
 

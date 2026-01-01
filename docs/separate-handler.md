@@ -1,6 +1,6 @@
 # Separate Handler from Business Logic
 
-[Main Menu](../README.md)
+[Main Menu](../README.md#quick-links--optimisations)
 
 Use code architecture patterns such as hexagonal architecture and the concept of ports, adapters and domain use cases to distinguish distinct boundaries between business logic and tooling.
 
