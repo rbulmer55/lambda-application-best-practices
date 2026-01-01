@@ -10,7 +10,7 @@ Date: 12/25
 
 ## Introduction
 
-This document captures practical best practices for building and operating AWS Lambda functions. It is intended for engineers and SREs working on serverless TypeScript services who want reliable, cost-effective, and maintainable database-backed Lambdas.
+This document captures practical best practices for building and operating AWS Lambda functions. It is intended for engineers and SREs working on serverless TypeScript services who want reliable, cost-effective, and maintainable Lambdas.
 
 ### Goals
 
