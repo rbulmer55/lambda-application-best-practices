@@ -1,0 +1,15 @@
+{
+  "name": "lambda-application-best-practices",
+  "version": "1.0.0",
+  "description": "``` Author: Robert Bulmer Date: 12/25 ```",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
