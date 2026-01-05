@@ -10,7 +10,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --config ./jest.config.js"
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.30.0",
@@ -19,12 +19,20 @@
     "@aws-sdk/client-eventbridge": "^3.962.0",
     "@middy/core": "^6.4.5",
     "@middy/http-error-handler": "^6.4.5",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "ajv-keywords": "^5.1.0",
+    "convict": "^6.2.4",
     "http-errors": "^2.0.1",
     "mongodb": "^7.0.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@types/ajv": "^0.0.5",
     "@types/aws-lambda": "^8.10.159",
-    "@types/http-errors": "^2.0.5"
+    "@types/http-errors": "^2.0.5",
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6"
   }
 }

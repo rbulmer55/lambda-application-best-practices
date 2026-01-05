@@ -3,15 +3,15 @@ import { VehicleBooking } from '@models/vehicle-booking';
 import { EventPublisher } from '@shared/events/event-publisher';
 import { ServiceMetadata } from '@shared/types/service-metadata';
 
-const eventBusName = config.get('eventBusName');
-const eventPublisher = new EventPublisher(eventBusName);
-
-export const completeVehicleBookingEventAdapter = async (
+export const createVehicleBookingEventAdapter = async (
   booking: VehicleBooking,
   metadata: ServiceMetadata,
 ) => {
+  const eventBusName = config.get('eventBusName');
+  const eventPublisher = new EventPublisher(eventBusName);
+
   await eventPublisher.publish({
-    type: 'VehicleBookingCompleted',
+    type: 'VehicleBookingCreated',
     payload: {
       bookingId: booking.bookingId,
       userId: booking.userId,

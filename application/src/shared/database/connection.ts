@@ -2,7 +2,7 @@ import { MongoClient, Db } from 'mongodb';
 import { logger } from '../powertools';
 import { config } from '@config/config';
 
-const uri = config.get('MONGO_URI');
+const uri = config.get('dbConnString');
 
 let cachedClient: MongoClient | null = null;
 let cachedDb: Db | null = null;

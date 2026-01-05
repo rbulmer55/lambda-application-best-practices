@@ -1,12 +1,10 @@
 export const VehicleBookingRequestSchema = {
   type: 'object',
   properties: {
-    vehicleId: { type: 'string' },
     userId: { type: 'string' },
     startDate: { type: 'string', format: 'date-time' },
     endDate: { type: 'string', format: 'date-time' },
     servicePlanId: { type: 'string' },
-    warrantyId: { type: 'string' },
     vehicleDetails: {
       type: 'object',
       properties: {
@@ -18,6 +16,7 @@ export const VehicleBookingRequestSchema = {
           enum: ['PETROL', 'DIESEL', 'ELECTRIC', 'HYBRID'],
         },
         mileage: { type: 'integer' },
+        warrantyId: { type: 'string' },
       },
       required: ['make', 'model', 'year', 'fuelType'],
     },
@@ -32,5 +31,5 @@ export const VehicleBookingRequestSchema = {
       },
     },
   },
-  required: ['vehicleId', 'userId', 'startDate', 'endDate'],
+  required: ['userId', 'startDate', 'endDate'],
 };

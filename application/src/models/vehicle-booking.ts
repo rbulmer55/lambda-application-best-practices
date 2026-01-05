@@ -1,14 +1,26 @@
+import { bookingStatus } from '@shared/types/booking-status';
 import { Vehicle } from './vehicle';
 
-export type VehicleBooking = Readonly<{
-  bookingId?: string;
+export type VehicleBookingPayload = Readonly<{
   userId: string;
   startDate: Date;
   endDate: Date;
   servicePlanId?: string;
   vehicle?: Vehicle;
   options?: BookingOptions;
-  status: 'BOOKED' | 'CANCELLED' | 'COMPLETED';
+}>;
+
+export type VehicleBooking = Readonly<{
+  bookingId: string;
+  userId: string;
+  startDate: Date;
+  endDate: Date;
+  servicePlanId?: string;
+  vehicle?: Vehicle;
+  options?: BookingOptions;
+  status: bookingStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }>;
 
 export type BookingOptions = Readonly<{

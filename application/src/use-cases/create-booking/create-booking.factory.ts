@@ -2,11 +2,12 @@ import {
   VehicleBookingRequestDTO,
   VehicleBookingResponseDTO,
 } from '@dto/vehicle-booking-dto';
-import { VehicleBooking } from '@models/vehicle-booking';
+import { VehicleBooking, VehicleBookingPayload } from '@models/vehicle-booking';
+import { bookingStatus } from '@shared/types/booking-status';
 
-export function completeVehicleBookingFromDTO(
+export function createVehicleBookingFromDTO(
   input: VehicleBookingRequestDTO,
-): VehicleBooking {
+): VehicleBookingPayload & { status: bookingStatus } {
   if (input.startDate >= input.endDate) {
     throw new Error('Start date must be before end date');
   }
@@ -46,7 +47,7 @@ export function completeVehicleBookingFromDTO(
   };
 }
 
-export const completeVehicleBookingToDTO = (
+export const createVehicleBookingToDTO = (
   booking: VehicleBooking,
 ): VehicleBookingResponseDTO => {
   if (!booking.bookingId) {

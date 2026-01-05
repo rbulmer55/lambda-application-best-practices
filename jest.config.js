@@ -1,0 +1,26 @@
+module.exports = {
+  testEnvironment: 'node',
+  roots: ['<rootDir>'],
+  testMatch: ['**/*.test.ts'],
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+  },
+  setupFiles: ['<rootDir>/jest.env.js'],
+  moduleNameMapper: {
+    '^@adapters/(.*)': '<rootDir>/application/src/adapters/$1',
+    '^@config/(.*)': '<rootDir>/application/src/config/$1',
+    '^@config': '<rootDir>/application/src/config/$index',
+    '^@domain/(.*)': '<rootDir>/application/src/domain/$1',
+    '^@entity/(.*)': '<rootDir>/application/src/entity/$1',
+    '^@schemas/(.*)': '<rootDir>/application/src/schemas/$1',
+    '^@shared/(.*)': '<rootDir>/application/src/shared/$1',
+    '^@shared': '<rootDir>/application/src/shared/$index',
+    '^@errors/(.*)': '<rootDir>/application/src/errors/$1',
+    '^@repositories/(.*)': '<rootDir>/application/src/repositories/$1',
+    '^@events/(.*)': '<rootDir>/application/src/events/$1',
+    '^@models/(.*)': '<rootDir>/application/src/models/$1',
+    '^@dto/(.*)': '<rootDir>/application/src/dto/$1',
+    '^@use-cases/(.*)': '<rootDir>/application/src/use-cases/$1',
+    '^@packages/(.*)': '<rootDir>/packages/$1',
+  },
+};

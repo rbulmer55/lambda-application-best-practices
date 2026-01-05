@@ -1,7 +1,8 @@
-import { VehicleBooking } from '@models/vehicle-booking';
+import { VehicleBooking, VehicleBookingPayload } from '@models/vehicle-booking';
 import { logger, tracer } from '@shared/powertools';
 import { getMongoDb } from '../connection';
 import { Collection, ObjectId } from 'mongodb';
+import { bookingStatus } from '@shared/types/booking-status';
 
 async function getBookingCollection(): Promise<Collection> {
   const db = await getMongoDb();
@@ -9,24 +10,33 @@ async function getBookingCollection(): Promise<Collection> {
 }
 
 export class BookingRepository {
-  @tracer.captureMethod({ subSegmentName: 'DB.CompleteVehicleBooking' })
-  async createBooking(booking: VehicleBooking): Promise<VehicleBooking> {
+  @tracer.captureMethod({ subSegmentName: 'DB.CreateVehicleBooking' })
+  async createBooking(
+    booking: VehicleBookingPayload & { status: bookingStatus },
+  ): Promise<VehicleBooking> {
     const collection = await getBookingCollection();
 
     const bookingId = new ObjectId();
+
+    const databaseBooking: VehicleBooking & { _id: ObjectId } = {
+      ...booking,
+      _id: bookingId,
+      bookingId: bookingId.toString(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
     try {
-      await collection.insertOne({
-        _id: bookingId,
-        ...booking,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      await collection.insertOne(databaseBooking);
+
+      logger.info('Booking saved to database', {
+        bookingId: databaseBooking.bookingId,
       });
 
-      logger.info('Booking saved to database', { bookingId });
-      return booking;
+      return databaseBooking;
     } catch (err) {
       logger.error('Failed to save booking', {
-        bookingId,
+        bookingId: databaseBooking.bookingId,
         error: err,
       });
       throw err;

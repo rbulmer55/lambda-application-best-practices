@@ -25,14 +25,21 @@ import {
   VehicleBookingRequestDTO,
   VehicleBookingResponseDTO,
 } from '@dto/vehicle-booking-dto';
-import { VehicleBookingRequestSchema } from '@schemas/vehicle-booking/vehicle-booking-request.schema';
-import { completeBookingUseCase } from '@use-cases/complete-booking/complete-booking.use-case';
+import { VehicleBookingRequestSchema } from '@schemas/vehicle-booking';
 import { injectRequestContext } from '@shared/api/request-context';
 import { ServiceMetadata } from '@shared/types/service-metadata';
+import { createBookingUseCase } from '@use-cases/create-booking';
 
 const stage = config.get('stage');
 
-export const completeVehicleBooking = async (
+/**
+ *
+ * Primary Adapter: Create Vehicle Booking
+ * Purpose: Handles the API Gateway event, validates input,
+ *          invokes the create booking use case, and returns
+ *          the appropriate HTTP response.
+ */
+export const createVehicleBookingAdapter = async (
   event: APIGatewayProxyEvent,
 ): Promise<APIGatewayProxyResult> => {
   try {
@@ -46,11 +53,11 @@ export const completeVehicleBooking = async (
 
     // Execute use case
     const vehicleBookingResult: VehicleBookingResponseDTO =
-      await completeBookingUseCase(payload, metadata);
+      await createBookingUseCase(payload, metadata);
 
-    metrics.addMetric('BookingCompleted', MetricUnit.Count, 1);
+    metrics.addMetric('BookingCreated', MetricUnit.Count, 1);
 
-    logger.info('Vehicle booking completed', {
+    logger.info('Vehicle booking created', {
       bookingId: vehicleBookingResult.bookingId,
     });
 
@@ -65,13 +72,13 @@ export const completeVehicleBooking = async (
     if (error instanceof Error) errorMessage = error.message;
     logger.error(errorMessage);
 
-    metrics.addMetric('CompleteVehicleBookingError', MetricUnit.Count, 1);
+    metrics.addMetric('CreateVehicleBookingError', MetricUnit.Count, 1);
 
     return errorHandler(error);
   }
 };
 
-export const handler = middy(completeVehicleBooking)
+export const handler = middy(createVehicleBookingAdapter)
   .use(injectLambdaContext(logger))
   .use(captureLambdaHandler(tracer))
   .use(logMetrics(metrics))

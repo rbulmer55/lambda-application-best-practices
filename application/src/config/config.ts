@@ -8,6 +8,24 @@ export const config = convict({
     default: '',
     env: 'STAGE',
   },
+  serviceName: {
+    doc: 'The service being deployed',
+    format: String,
+    default: '',
+    env: 'SERVICE',
+  },
+  domainName: {
+    doc: 'The domain of the service being deployed',
+    format: String,
+    default: '',
+    env: 'DOMAIN',
+  },
+  eventBusName: {
+    doc: 'The event bus name',
+    format: String,
+    default: '',
+    env: 'EVENT_BUS',
+  },
   accessRoleArn: {
     doc: 'The arn of the iam role',
     format: String,
@@ -25,5 +43,11 @@ export const config = convict({
     format: String,
     default: 'test',
     env: 'DB_NAME',
+  },
+  dbConnString: {
+    doc: 'The connection string for the database',
+    format: String,
+    default: 'test',
+    env: 'MONGO_URI',
   },
 }).validate({ allowed: 'strict' });
