@@ -64,9 +64,9 @@ Use: CloudWatch Embedded Metrics Format (EMF)or an external metrics backend (Dat
 
 @aws-lambda-powertools/metrics for EMF-compatible metrics
 
-### 3. Centralize logging and metrics
+### 3. Centralise logging and metrics
 
-Send logs to CloudWatch Logs or a centralized logging platform and Standardize log format across all Lambdas
+Send logs to CloudWatch Logs or a centralised logging platform and Standardise log format across all Lambdas
 
 Create dashboards for:
 
@@ -92,7 +92,7 @@ Enable tracing to follow requests across services and identify latency bottlenec
 
 Use tracing to:
 
-- Visualize end-to-end request flows
+- Visualise end-to-end request flows
 
 - Identify slow dependencies
 

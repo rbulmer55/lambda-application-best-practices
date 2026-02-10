@@ -31,7 +31,7 @@ Avoid bundling tests, docs, and source maps unless required
 
 ### 2. Enable tree-shaking & minification
 
-Prefer bundlers optimized for serverless
+Prefer bundlers optimised for serverless
 
 Recommended bundlers:
 
@@ -56,7 +56,7 @@ build({
 });
 ```
 
-### 3. Externalize large or native dependencies
+### 3. Externalise large or native dependencies
 
 Do not bundle:
 

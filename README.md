@@ -2,7 +2,8 @@
 
 ```
 Author: Robert Bulmer
-Date: 12/25
+Title: Senior Consulting Engineer at MongoDB Professional Servies
+Modifed: Feb 2026
 ```
 
 > [!IMPORTANT]
@@ -20,7 +21,6 @@ This guide focuses on AWS Lambda, but the principles and recommendations apply u
 
 - **Purpose**
   Provide concise, actionable guidance covering:
-
   - Connection handling and pooling
 
   - Performance tuning (memory, timeouts)
@@ -33,22 +33,20 @@ This guide focuses on AWS Lambda, but the principles and recommendations apply u
   Backend engineers, DevOps/SREs, and reviewers maintaining or operating serverless workloads.
 
 - **Scope**
-
   - Runtime and deployment practices (connection caching, timeouts, memory sizing, packaging)
 
   - Application architecture (separating handlers from business logic)
 
   - Observability and operational concerns
 
-This guide does not replace security policies—always follow your organization’s standards for secrets management, IAM, and networking.
+This guide does not replace security policies—always follow your organisation’s standards for secrets management, IAM, and networking.
 
 - **How to use this guide**
-
   - Read the numbered sections for quick rules of thumb
 
   - Refer to the application/ directory for concrete examples implemented in this repository
 
-The guidance emphasizes pragmatic changes (e.g., connection reuse, short timeouts, minimal bundles) that typically deliver the largest reliability and cost improvements for serverless applications.
+The guidance emphasises pragmatic changes (e.g., connection reuse, short timeouts, minimal bundles) that typically deliver the largest reliability and cost improvements for serverless applications.
 
 ## Quick Links — Optimisations
 
@@ -88,7 +86,6 @@ The guidance emphasizes pragmatic changes (e.g., connection reuse, short timeout
 - AWS Lambda (and other FaaS platforms) are ephemeral compute environments
 
 - Functions should be:
-
   - Stateless
 
   - Fast to initialize

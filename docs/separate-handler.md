@@ -50,7 +50,7 @@ Avoid:
 
 - SDK clients created per invocation
 
-### 2. Organize code by responsibility
+### 2. Organise code by responsibility
 
 Recommended structure:
 
@@ -62,8 +62,10 @@ application/
 │  ├─ use-cases/
 │  │  └─ health-check/
 │  │     └─ health-check.ts
-│  ├─ ports/
 │  └─ adapters/
+│     └─ primary/
+│     └─ secondary/
+
 ```
 
 ### 3. Write Lambda-agnostic use cases
@@ -90,21 +92,21 @@ Test handlers separately for event/response mapping
 
 ## Examples in this repo
 
-- Handler examples: `application/entry-points/health-check-lambda.ts`
-- Use-case pattern: `application/src/use-cases/health-check/health-check.ts`
+- Handler examples: `application/src/adapters/primary/create-vehicle-booking/create-vehicle-booking.api-adapter.ts`
+- Use-case pattern: `application/src/use-cases/create-booking/create-booking.use-case.ts`
 
 ## Notes
 
-- Avoid long-running initialization inside handler files
+- Avoid long-running initialisation inside handler files
 
 - Prefer dependency injection at the adapter boundary
 
-- This pattern pairs well with Lambda Power Tuning and bundle size optimizations
+- This pattern pairs well with Lambda Power Tuning and bundle size optimisations
 
 ## References
 
 AWS TypeScript handler best practices:
 https://docs.aws.amazon.com/lambda/latest/dg/typescript-handler.html#typescript-best-practices
 
-Clean Serverless Code example:
+Clean Serverless Code example from AWS Serverless Hero Lee Gilmore:
 https://github.com/leegilmorecode/clean-serverless-code.git

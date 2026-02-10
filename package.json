@@ -10,13 +10,19 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "jest --config ./jest.config.js"
+    "test": "jest --config ./jest.config.js",
+    "load-test": "artillery run ./load-testing/script.yml -e development --env-file .env.development",
+    "build": "rm -rf dist && node build.js",
+    "preplandev": "npm run build",
+    "plandev": "source .env.development && cd ./build/env/dev && terraform init --upgrade=true && terraform plan",
+    "predeploydev": "source .env.development && npm run plandev",
+    "deploydev": "source .env.development && cd ./build/env/dev && terraform apply -auto-approve",
+    "destroydev": "source .env.development && cd ./build/env/dev && terraform destroy -auto-approve"
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.30.0",
     "@aws-lambda-powertools/metrics": "^2.30.0",
     "@aws-lambda-powertools/tracer": "^2.30.0",
-    "@aws-sdk/client-eventbridge": "^3.962.0",
     "@middy/core": "^6.4.5",
     "@middy/http-error-handler": "^6.4.5",
     "ajv": "^8.17.1",
@@ -28,11 +34,20 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-eventbridge": "^3.986.0",
+    "@aws-sdk/credential-providers": "^3.986.0",
     "@types/ajv": "^0.0.5",
     "@types/aws-lambda": "^8.10.159",
     "@types/http-errors": "^2.0.5",
     "@types/jest": "^30.0.0",
+    "artillery": "^2.0.30",
+    "dotenv": "^17.2.4",
+    "dotenv-cli": "^11.0.0",
+    "esbuild": "^0.27.3",
     "jest": "^30.2.0",
-    "ts-jest": "^29.4.6"
+    "prettier": "^3.8.1",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

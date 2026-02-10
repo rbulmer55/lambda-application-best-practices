@@ -20,34 +20,22 @@ export const config = convict({
     default: '',
     env: 'DOMAIN',
   },
-  eventBusName: {
-    doc: 'The event bus name',
-    format: String,
-    default: '',
-    env: 'EVENT_BUS',
-  },
   accessRoleArn: {
     doc: 'The arn of the iam role',
     format: String,
     default: 'accessRoleArn',
-    env: 'MDB_ACCESS_ROLE_ARN',
+    env: 'DB_ACCESS_ROLE_ARN',
   },
   clusterHost: {
-    doc: 'The hostname of the cluster for connection string',
+    doc: 'The hostname of the cluster for connection string including srv',
     format: String,
     default: 'clusterHost',
-    env: 'MDB_CLUSTER_HOSTNAME',
+    env: 'DB_CLUSTER_HOST_SRV',
   },
   databaseName: {
     doc: 'The name of the database',
     format: String,
     default: 'test',
     env: 'DB_NAME',
-  },
-  dbConnString: {
-    doc: 'The connection string for the database',
-    format: String,
-    default: 'test',
-    env: 'MONGO_URI',
   },
 }).validate({ allowed: 'strict' });

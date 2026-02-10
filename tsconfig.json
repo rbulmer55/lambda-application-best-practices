@@ -37,8 +37,7 @@
       "@use-cases/*": ["./application/src/use-cases/*"],
       "@packages/*": ["./packages/*"],
       "@events/*": ["application/src/events/*"]
-    },
-    "outDir": "./application/dist"
+    }
   },
   "include": ["application/**/*"],
   "exclude": ["node_modules", "cdk.out"]

@@ -60,7 +60,7 @@ Avoid one-size-fits-all settings:
 
 - Test: production-like sizing for realism
 
-- Prod: optimized for latency and cost
+- Prod: optimised for latency and cost
 
 Document the rationale so future changes are intentional.
 

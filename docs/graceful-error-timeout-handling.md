@@ -69,9 +69,9 @@ Examples:
 - `VALIDATION_ERROR`
 - `DEPENDENCY_TIMEOUT`
 - `NOT_FOUND`
-- `UNAUTHORIZED`
+- `UNAUTHORISED`
 
-### 4. Centralize error handling
+### 4. Centralise error handling
 
 Handlers should delegate error formatting to a shared utility.
 
