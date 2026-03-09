@@ -1,6 +1,6 @@
 # Minify Packages
 
-[Main Menu](../README.md#quick-links--optimisations)
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Memory Sizing](./memory-sizing.md)
 
 ## Why it matters
 
@@ -77,3 +77,21 @@ Let the runtime or layer handle them
 ## Examples
 
 - Check this repo's build steps (see `build.js` and `package.json` scripts) and adapt bundler config for production builds.
+
+## Testing
+
+We have modified our Esbuild script to handle minifed (default) and unminified lambda deployments.
+
+```js
+build({
+  ...sharedConfig,
+  minify: false, // example without minification for testing purposes
+  platform: 'node', // for CJS,
+  target: 'es2020',
+  outdir: './build/modules/functions/dist-unminified',
+});
+```
+
+By running tests against the unminified build, we can better observe differences in behavior and performance. The total number of dependencies included in your deployment can affect overall performance, so results may vary. Since this example uses a test project, performance differences may be limited.
+
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Memory Sizing](./memory-sizing.md)

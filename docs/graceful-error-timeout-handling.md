@@ -1,6 +1,6 @@
 # Graceful Error & Timeout Handling
 
-[Main Menu](../README.md#quick-links--optimisations)
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Local Simulation](./local-simulation.md)
 
 ## Why it matters
 
@@ -139,3 +139,9 @@ This improves:
 - Central error handler: `application/src/shared/error-handler.ts` (or similar)
 
 - This pattern works well with retries, DLQs, and Step Functions
+
+## Testing
+
+Adding error handling and timeout management to your Lambda functions does not significantly improve raw performance. Instead, it enhances the robustness and predictability of your functions, helping to identify issues when execution fails and preventing unnecessarily long runtimes.
+
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Local Simulation](./local-simulation.md)

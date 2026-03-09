@@ -45,7 +45,7 @@ variable "mongodbatlas_project_id" {
 variable "cluster_tier" {
   description = "The cluster tier to use for the Atlas cluster"
   type        = string
-  default     = "M10"
+  default     = "M30"
   validation {
     condition     = contains(["M10", "M20", "M30"], upper(var.cluster_tier))
     error_message = "cluster_tier must be one of: M10, M20, M30 (case-insensitive)."

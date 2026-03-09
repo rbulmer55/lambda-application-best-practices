@@ -1,6 +1,6 @@
 # Separate Handler from Business Logic
 
-[Main Menu](../README.md#quick-links--optimisations)
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Minify Packages](./minify-packages.md)
 
 Use code architecture patterns such as hexagonal architecture and the concept of ports, adapters and domain use cases to distinguish distinct boundaries between business logic and tooling.
 
@@ -110,3 +110,9 @@ https://docs.aws.amazon.com/lambda/latest/dg/typescript-handler.html#typescript-
 
 Clean Serverless Code example from AWS Serverless Hero Lee Gilmore:
 https://github.com/leegilmorecode/clean-serverless-code.git
+
+## Testing
+
+Separating the Lambda handler from the business logic does not affect performance testing. The benefits of this change are less about speed and more about maintainability and long-term code sustainability.
+
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Minify Packages](./minify-packages.md)

@@ -1,6 +1,6 @@
 # Monitor & Log
 
-[Main Menu](../README.md#quick-links--optimisations)
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Coming Soon](../README.md#quick-links--optimisations)
 
 ## Why it matters
 
@@ -146,3 +146,9 @@ Recommended Dependencies:
 - [@aws-lambda-powertools/logger](https://www.npmjs.com/package/@aws-lambda-powertools/logger)
 - [@aws-lambda-powertools/metrics](https://www.npmjs.com/package/@aws-lambda-powertools/metrics)
 - [@aws-lambda-powertools/tracer](https://www.npmjs.com/package/@aws-lambda-powertools/tracer)
+
+## Testing
+
+While monitoring and logging are crucial for evaluating the health of your Lambda functions, they do not improve execution speed. As a best practice, log only critical information at well-defined points in the code to avoid overlogging, which can negatively impact performance. In most cases, the performance impact is minor, but it is still good to be mindful.
+
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Coming Soon](../README.md#quick-links--optimisations)

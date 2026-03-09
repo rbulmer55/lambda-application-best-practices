@@ -1,6 +1,6 @@
 # Memory Sizing and CPU
 
-[Main Menu](../README.md#quick-links--optimisations)
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Error Handling](./graceful-error-timeout-handling.md)
 
 ## Why it matters
 
@@ -93,3 +93,17 @@ variable "lambda_memory_mb" {
 # prod.tfvars
 lambda_memory_mb = 1024
 ```
+
+## Resources
+
+Check out James Eastham’s video on reducing Lambda cold start times and improving performance with the .NET runtime. In this excellent explanation, he demonstrates the relationship between memory allocation and Lambda performance.
+
+[Main Menu](https://youtu.be/roIIujtLaQ4?si=JDlEoU_FJ7jGsrxp)
+
+## Testing
+
+Lambda Power Tuning is an invaluable tool for determining the optimal memory allocation for your Lambda functions.
+
+For this test, we will compare performance across memory configurations of 128 MB, 256 MB, and 1 GB to observe the differences in execution speed and efficiency.
+
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Error Handling](./graceful-error-timeout-handling.md)

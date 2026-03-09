@@ -1,6 +1,6 @@
 # Local Simulation
 
-[Main Menu](../README.md#quick-links--optimisations)
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Monitoring and Logging](./monitor-and-log.md)
 
 ## Why it matters
 
@@ -117,3 +117,9 @@ Keep integration tests:
 ## Notes
 
 For more information on AWS remote debugging see [https://aws.amazon.com/blogs/compute/accelerating-local-serverless-development-with-console-to-ide-and-remote-debugging-for-aws-lambda/](https://aws.amazon.com/blogs/compute/accelerating-local-serverless-development-with-console-to-ide-and-remote-debugging-for-aws-lambda/)
+
+## Testing
+
+For our testing, we will use remote invocations in ephemeral environments to obtain the closest representation of how our application behaves in production. While local emulators can be useful, they do not always accurately replicate the real execution environment or the interactions between services that occur in production.
+
+[Main Menu](../README.md#quick-links--optimisations) | [Next - Monitoring and Logging](./monitor-and-log.md)
