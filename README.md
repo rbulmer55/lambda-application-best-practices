@@ -63,6 +63,8 @@ The guidance emphasises pragmatic changes (e.g., connection reuse, short timeout
 
 ### Database
 
+For this section, we will use **MongoDB Atlas, a managed document database**. Many of the recommendations discussed here also apply to other relational and non-serverless databases, and can be adapted with minor adjustments to follow best practices in different environments.
+
 - 7 - Connection Management (Caching)
 - 8 - Native driver
 - 9 - Max Idle Time
