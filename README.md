@@ -90,7 +90,7 @@ For this section, we will use **MongoDB Atlas, a managed document database**. Ma
 - Functions should be:
   - Stateless
 
-  - Fast to initialize
+  - Fast to initialise
 
   - Explicit about timeouts and failure modes
 
