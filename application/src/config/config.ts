@@ -35,7 +35,13 @@ export const config = convict({
   databaseName: {
     doc: 'The name of the database',
     format: String,
-    default: 'test',
+    default: 'test-db',
     env: 'DB_NAME',
+  },
+  vehicleEventBusName: {
+    doc: 'The name of the Vehicle Event Bus',
+    format: String,
+    default: 'test-bus',
+    env: 'VEH_EVENT_BUS_NAME',
   },
 }).validate({ allowed: 'strict' });

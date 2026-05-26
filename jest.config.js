@@ -2,19 +2,29 @@ module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>'],
   testMatch: ['**/*.test.ts'],
+
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
   },
+
+  extensionsToTreatAsEsm: ['.ts'],
+
   setupFiles: ['<rootDir>/jest.env.js'],
+
   moduleNameMapper: {
     '^@adapters/(.*)': '<rootDir>/application/src/adapters/$1',
     '^@config/(.*)': '<rootDir>/application/src/config/$1',
-    '^@config': '<rootDir>/application/src/config/$index',
+    '^@config': '<rootDir>/application/src/config/index',
     '^@domain/(.*)': '<rootDir>/application/src/domain/$1',
     '^@entity/(.*)': '<rootDir>/application/src/entity/$1',
     '^@schemas/(.*)': '<rootDir>/application/src/schemas/$1',
     '^@shared/(.*)': '<rootDir>/application/src/shared/$1',
-    '^@shared': '<rootDir>/application/src/shared/$index',
+    '^@shared': '<rootDir>/application/src/shared/index',
     '^@errors/(.*)': '<rootDir>/application/src/errors/$1',
     '^@repositories/(.*)': '<rootDir>/application/src/repositories/$1',
     '^@events/(.*)': '<rootDir>/application/src/events/$1',

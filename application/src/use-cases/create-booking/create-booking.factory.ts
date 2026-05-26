@@ -12,6 +12,7 @@ export function createVehicleBookingFromDTO(
     throw new Error('Start date must be before end date');
   }
 
+  // Basic business validation - Electric vehicles do not require oil services
   if (
     input.vehicleDetails?.fuelType === 'ELECTRIC' &&
     input.bookingOptions?.oilService

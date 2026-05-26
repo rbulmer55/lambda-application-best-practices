@@ -31,5 +31,11 @@ export const VehicleBookingRequestSchema = {
       },
     },
   },
-  required: ['userId', 'startDate', 'endDate'],
+  required: [
+    'userId',
+    'startDate',
+    'endDate',
+    'vehicleDetails',
+    'bookingOptions',
+  ],
 };

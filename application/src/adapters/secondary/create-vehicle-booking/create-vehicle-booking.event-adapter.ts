@@ -7,7 +7,7 @@ export const createVehicleBookingEventAdapter = async (
   booking: VehicleBooking,
   metadata: ServiceMetadata,
 ) => {
-  const eventBusName = config.get('eventBusName');
+  const eventBusName = config.get('vehicleEventBusName');
   const eventPublisher = new EventPublisher(eventBusName);
 
   await eventPublisher.publish({

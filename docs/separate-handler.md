@@ -2,7 +2,13 @@
 
 [Main Menu](../README.md#quick-links--optimisations) | [Next - Minify Packages](./minify-packages.md)
 
-Use code architecture patterns such as hexagonal architecture and the concept of ports, adapters and domain use cases to distinguish distinct boundaries between business logic and tooling.
+Being relaxed when writing code can lead to maintenance and extensibility problems with enterprise applications.
+
+Learning to use code architecture patterns such as **hexagonal architecture** improve and stabilise the code as it grows and makes it easier and less expensive for the business to implement new features.
+
+Hexagonal architecutre uses the concept of **ports, adapters and domain entities or use-cases** to distinguish distinct boundaries between business logic and tooling.
+
+Using this pattern can also help with being technology agnostic, making it easier to transpose your code onto another cloud or service with **reduced risk**.
 
 ## Why it matters
 
@@ -13,6 +19,9 @@ Use code architecture patterns such as hexagonal architecture and the concept of
 ## Architectural Principle
 
 Handlers are adapters — not application logic.
+
+> **NOTE**
+> Many people who build with ephemeral services start with writing multipurpose functions **A.K.A Lambdaliths**. These type of functions get you started quickly but are problematic to scale, debug and extend.
 
 - Handler: Translates AWS events into application inputs
 
@@ -68,6 +77,13 @@ application/
 
 ```
 
+#### Definitons
+
+- **/entry-points**, these are insignificant for the architectural pattern however help with our terrform example. These provide a more maintainable build script in `./build.js`
+- **/src/use-cases** provide our core buisiness logic, here we implment only code that matters to our company. **Do not** bleed infrastructure concerns into this.
+- **/src/adapters/primary**, Primary Adapters are our incoming infrastructure concerns. For Example an API Gateway method integration request or S3 Bucket Object Trigger.
+- **/src/adapters/seconadary**, Secondary Adapters are our outbound infrastructure concerns. For Example writing to an SQS queue or an EventBridge bus.
+
 ### 3. Write Lambda-agnostic use cases
 
 Use cases should:
@@ -84,15 +100,17 @@ This allows:
 
 - Reuse across handlers, CLIs, or batch jobs
 
+- Transferability to other clouds or container architectures
+
 ### 4. Test use cases independently
 
-Unit test use cases without Lambda event mocks.
+Unit test use-cases without Lambda event mocks.
 
-Test handlers separately for event/response mapping
+Test adapters separately for event/response mapping
 
 ## Examples in this repo
 
-- Handler examples: `application/src/adapters/primary/create-vehicle-booking/create-vehicle-booking.api-adapter.ts`
+- Adapter examples: `application/src/adapters/primary/create-vehicle-booking/create-vehicle-booking.api-adapter.ts`
 - Use-case pattern: `application/src/use-cases/create-booking/create-booking.use-case.ts`
 
 ## Notes

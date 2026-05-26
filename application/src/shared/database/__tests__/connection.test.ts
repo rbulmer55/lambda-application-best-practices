@@ -1,19 +1,24 @@
-// __tests__/mongoDb.test.ts
-
-import { getMongoDb } from '../connection'; // adjust path as needed
+import { getMongoDb } from '../connection';
 import { MongoClient, Db } from 'mongodb';
+import { fromTemporaryCredentials } from '@aws-sdk/credential-providers';
 
 jest.mock('mongodb');
 jest.mock('@shared/powertools', () => ({
   logger: { info: jest.fn() },
 }));
+jest.mock('@aws-sdk/credential-providers', () => ({
+  fromTemporaryCredentials: jest.fn(),
+}));
 
 const mockDb = {} as Db;
 const mockConnect = jest.fn();
 const mockDbMethod = jest.fn(() => mockDb);
+const mockAwsProvider = { token: 'fake-token' };
 
 beforeEach(() => {
   jest.clearAllMocks();
+
+  (fromTemporaryCredentials as jest.Mock).mockReturnValue(mockAwsProvider);
 
   // @ts-ignore
   MongoClient.mockImplementation(function (this: any) {
@@ -32,12 +37,20 @@ describe('getMongoDb', () => {
     // First call
     const db = await getMongoDb();
 
-    expect(logger.info).toHaveBeenCalledWith('Creating new MongoDB client');
-    expect(MongoClient).toHaveBeenCalledWith('mongodb://vehicle-db:27017', {
-      maxPoolSize: 10,
-      minPoolSize: 1,
-      waitQueueTimeoutMS: 1000,
-    });
+    expect(logger.info).toHaveBeenCalledWith(
+      'No cached MongoDB client found. Creating new one',
+    );
+    expect(MongoClient).toHaveBeenCalledWith(
+      'mongodb+srv://clusterHost/?authMechanism=MONGODB-AWS&authSource=%24external',
+      {
+        maxPoolSize: 10,
+        minPoolSize: 1,
+        waitQueueTimeoutMS: 1000,
+        authMechanismProperties: {
+          AWS_CREDENTIAL_PROVIDER: mockAwsProvider,
+        },
+      },
+    );
     expect(mockConnect).toHaveBeenCalled();
     expect(mockDbMethod).toHaveBeenCalledWith('testDB');
     expect(db).toBe(mockDb);

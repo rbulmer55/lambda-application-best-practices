@@ -6,7 +6,7 @@ import {
   createVehicleBookingFromDTO,
   createVehicleBookingToDTO,
 } from './create-booking.factory';
-import { VehicleBooking, VehicleBookingPayload } from '@models/vehicle-booking';
+import { VehicleBooking } from '@models/vehicle-booking';
 import {
   createVehicleBookingDatabaseAdapter,
   createVehicleBookingEventAdapter,
@@ -24,15 +24,15 @@ export async function createBookingUseCase(
   dto: VehicleBookingRequestDTO,
   metadata: ServiceMetadata,
 ): Promise<VehicleBookingResponseDTO> {
-  // transform DTO to domain model
+  // validate and transform DTO to domain model
   const booking = createVehicleBookingFromDTO(dto);
 
-  // persist booking
+  // persist booking - secondary adapter
   const createdBooking: VehicleBooking =
     await createVehicleBookingDatabaseAdapter(booking);
-  // publish event
+  // publish event - secondary adapter
   await createVehicleBookingEventAdapter(createdBooking, metadata);
 
-  // transform domain model to DTO
+  // transform domain model to DTO - Return response
   return createVehicleBookingToDTO(createdBooking);
 }

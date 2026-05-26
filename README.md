@@ -2,12 +2,13 @@
 
 ```
 Author: Robert Bulmer
-Title: Senior Consulting Engineer at MongoDB Professional Services
+Title: Software Consultant / Professional Services
 Modifed: Feb 2026
-```
 
-> [!IMPORTANT]
-> This guide is for learning purposes only. All examples given here should be tested and used at your own risk.
+**IMPORTANT**
+- This guide is for learning purposes only. All examples given here should be tested and used at your own risk.
+- This guide is not promotional or any way endorsed by a company. It has been written by the author purely for community consumption and benefits.
+```
 
 ## Introduction
 

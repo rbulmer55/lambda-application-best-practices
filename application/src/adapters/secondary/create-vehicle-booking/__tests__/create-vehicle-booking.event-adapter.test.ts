@@ -7,6 +7,12 @@ import { ServiceMetadata } from '@shared/types/service-metadata';
 // Mock dependencies
 jest.mock('@shared/events/event-publisher');
 
+jest.mock('@config/config', () => ({
+  config: {
+    get: jest.fn(),
+  },
+}));
+
 describe('createVehicleBookingEventAdapter', () => {
   const mockBooking: VehicleBooking = {
     bookingId: 'b123',
@@ -44,58 +50,67 @@ describe('createVehicleBookingEventAdapter', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
+    // Mock config value
+    (config.get as jest.Mock).mockReturnValue('test-bus');
+
+    // Mock publish method
     EventPublisher.prototype.publish = jest.fn().mockResolvedValue(true);
   });
 
   it('publishes the correct event with booking and metadata', async () => {
     await createVehicleBookingEventAdapter(mockBooking, mockMetadata);
 
-    // Check EventPublisher constructor
+    // Verify config lookup
+    expect(config.get).toHaveBeenCalledWith('vehicleEventBusName');
+
+    // Verify EventPublisher instantiated correctly
     expect(EventPublisher).toHaveBeenCalledWith('test-bus');
 
-    const publishCall = (EventPublisher as jest.Mock).prototype.publish.mock
-      .calls[0][0];
-    expect(publishCall).toEqual({
+    // Verify publish payload
+    expect(EventPublisher.prototype.publish).toHaveBeenCalledWith({
+      type: 'VehicleBookingCreated',
+      payload: {
+        bookingId: 'b123',
+        userId: 'user-x',
+        startDate: new Date('2024-08-10T10:00:00.000Z'),
+        endDate: new Date('2024-08-11T17:00:00.000Z'),
+        status: 'BOOKED',
+        vehicle: {
+          make: 'Toyota',
+          model: 'Corolla',
+          year: 2020,
+          fuelType: 'PETROL',
+          mileage: 25000,
+          warrantyId: 'warranty-456',
+        },
+        options: {
+          oilService: true,
+          brakesCheck: false,
+          tireRotation: true,
+          clutchInspection: false,
+          washAndVac: true,
+        },
+        servicePlanId: 'plan-123',
+      },
       metadata: {
         causationId: 'req-123',
         correlationId: 'corr-123',
         domain: 'Vehicle',
         service: 'BookingService',
       },
-      payload: {
-        bookingId: 'b123',
-        endDate: new Date('2024-08-11T17:00:00.000Z'),
-        options: {
-          brakesCheck: false,
-          clutchInspection: false,
-          oilService: true,
-          tireRotation: true,
-          washAndVac: true,
-        },
-        servicePlanId: 'plan-123',
-        startDate: new Date('2024-08-10T10:00:00.000Z'),
-        status: 'BOOKED',
-        userId: 'user-x',
-        vehicle: {
-          fuelType: 'PETROL',
-          make: 'Toyota',
-          mileage: 25000,
-          model: 'Corolla',
-          warrantyId: 'warranty-456',
-          year: 2020,
-        },
-      },
-      type: 'VehicleBookingCreated',
     });
   });
 
   it('propagates errors thrown from publish', async () => {
-    (EventPublisher as jest.Mock).mockImplementation(() => ({
-      publish: jest.fn().mockRejectedValue(new Error('event failed')),
-    }));
+    EventPublisher.prototype.publish = jest
+      .fn()
+      .mockRejectedValue(new Error('event failed'));
 
     await expect(
       createVehicleBookingEventAdapter(mockBooking, mockMetadata),
     ).rejects.toThrow('event failed');
+
+    expect(config.get).toHaveBeenCalledWith('vehicleEventBusName');
+    expect(EventPublisher).toHaveBeenCalledWith('test-bus');
   });
 });
