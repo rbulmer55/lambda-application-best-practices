@@ -1,6 +1,6 @@
 import { logger } from '@shared/powertools';
 import { APIGatewayProxyResult } from 'aws-lambda';
-import createError from 'http-errors';
+import createHttpError from 'http-errors';
 
 export function errorHandler(error: Error | unknown): APIGatewayProxyResult {
   logger.error(`private error: ${error}`);
@@ -18,8 +18,7 @@ export function errorHandler(error: Error | unknown): APIGatewayProxyResult {
           errorName: errorMessage,
           statusCode,
         });
-
-        throw createError.BadRequest(errorMessage);
+        throw createHttpError.BadRequest(errorMessage);
       case 'ResourceNotFound':
         errorMessage = error.message;
         statusCode = 404;
@@ -29,7 +28,7 @@ export function errorHandler(error: Error | unknown): APIGatewayProxyResult {
           statusCode,
         });
 
-        throw createError.NotFound(errorMessage);
+        throw createHttpError.NotFound(errorMessage);
       default:
         errorMessage = 'An error has occurred';
         statusCode = 500;
@@ -39,7 +38,7 @@ export function errorHandler(error: Error | unknown): APIGatewayProxyResult {
           statusCode,
         });
 
-        throw createError.InternalServerError(errorMessage);
+        throw createHttpError.InternalServerError(errorMessage);
     }
   } else {
     errorMessage = 'An error has occurred';
@@ -51,5 +50,5 @@ export function errorHandler(error: Error | unknown): APIGatewayProxyResult {
     statusCode,
   });
 
-  throw createError.InternalServerError(errorMessage);
+  throw createHttpError.InternalServerError(errorMessage);
 }

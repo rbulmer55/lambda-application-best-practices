@@ -4,7 +4,7 @@
 
 Being relaxed when writing code can lead to maintenance and extensibility problems with enterprise applications.
 
-Learning to use code architecture patterns such as **hexagonal architecture** improve and stabilise the code as it grows and makes it easier and less expensive for the business to implement new features.
+Learning to use code architecture patterns such as **hexagonal architecture** can improve and stabilise the code as it grows and makes it easier and cost effective for the business to implement new features.
 
 Hexagonal architecutre uses the concept of **ports, adapters and domain entities or use-cases** to distinguish distinct boundaries between business logic and tooling.
 

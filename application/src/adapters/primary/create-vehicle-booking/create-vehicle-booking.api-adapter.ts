@@ -45,7 +45,7 @@ export const createVehicleBookingAdapter = async (
   try {
     // Inject request context for tracing and logging
     const metadata: ServiceMetadata = injectRequestContext(event);
-    // Validate input
+    // Validate API request
     const { body } = event;
     if (!body) throw new ValidationError('no payload body');
     const payload = JSON.parse(body) as VehicleBookingRequestDTO;

@@ -8,7 +8,7 @@
 
 - Increasing memory often reduces execution time disproportionately, especially for CPU-bound workloads.
 
-Proper right-sizing can lower total cost even when per-ms pricing increases.
+Right-sizing can lower total cost even when per-ms pricing increases.
 
 ## Recommendations
 
@@ -20,7 +20,7 @@ Before increasing memory, determine whether the function is:
 
 - I/O-bound (network calls, DB queries, S3 reads/writes)
 
-CPU-bound functions benefit most from higher memory.
+> CPU-bound functions benefit most from higher memory.
 
 ### 2. Profile before and after
 
@@ -34,7 +34,7 @@ Measure:
 
 Compare results at multiple memory levels (e.g. 256 → 512 → 1024 MB)
 
-AWS tools:
+**AWS tools:**
 
 - CloudWatch Logs + Insights
 
@@ -52,22 +52,24 @@ Recommended approach:
 
 > Doubling memory often yields diminishing returns after CPU saturation.
 
+Typically as a finger in the air, **for production single purpose functions I start with 1 GB of memory**. While this may seem a large jump from the default size of 128 MB, in majority of cases runtime is reduced and the change is more cost effective.
+
 ### 4. Use environment-specific sizing
 
 Avoid one-size-fits-all settings:
 
-- Dev: lower memory, slower execution is acceptable
+- Dev/test: lower memory, slower execution is acceptable
 
-- Test: production-like sizing for realism
+- UAT: production-like sizing for realism
 
 - Prod: optimised for latency and cost
 
-Document the rationale so future changes are intentional.
+Document the rationale in Architectural Decision Records (ADRs) so future changes are intentional.
 
 ## Examples
 
-- Adjust memory in your infrastructure code under `build/modules/functions/` or the Terraform module used in this repo.
-- Alternatively, override memory size for environments using configuration parameters.
+- Adjust memory in your infrastructure code under `build/modules/functions/{x}/main.tf` or the Terraform module used in this repo.
+- Alternatively, override memory size for environments using configuration parameters but note some IAC tools will overwrite these changes.
 
 ```tf
 resource "aws_lambda_function" "handler" {
@@ -98,12 +100,14 @@ lambda_memory_mb = 1024
 
 Check out James Eastham’s video on reducing Lambda cold start times and improving performance with the .NET runtime. In this excellent explanation, he demonstrates the relationship between memory allocation and Lambda performance.
 
-[Main Menu](https://youtu.be/roIIujtLaQ4?si=JDlEoU_FJ7jGsrxp)
+[Youtube Link - https://youtu.be/roIIujtLaQ4?si=JDlEoU_FJ7jGsrxp](https://youtu.be/roIIujtLaQ4?si=JDlEoU_FJ7jGsrxp)
 
 ## Testing
 
 Lambda Power Tuning is an invaluable tool for determining the optimal memory allocation for your Lambda functions.
 
 For this test, we will compare performance across memory configurations of 128 MB, 256 MB, and 1 GB to observe the differences in execution speed and efficiency.
+
+**TODO**
 
 [Main Menu](../README.md#quick-links--optimisations) | [Next - Error Handling](./graceful-error-timeout-handling.md)

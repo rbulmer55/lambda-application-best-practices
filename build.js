@@ -5,7 +5,9 @@ const sharedConfig = {
   entryPoints: ['./application/entry-points/**/*'],
   bundle: true,
   minify: true,
-  external: [],
+  external: ['aws-sdk'],
+  sourcemap: false,
+  treeShaking: true,
 };
 
 build({
@@ -14,7 +16,6 @@ build({
   target: 'es2020',
   outdir: './build/modules/functions/dist',
 });
-
 
 build({
   ...sharedConfig,

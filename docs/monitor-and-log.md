@@ -152,3 +152,23 @@ Recommended Dependencies:
 While monitoring and logging are crucial for evaluating the health of your Lambda functions, they do not improve execution speed. As a best practice, log only critical information at well-defined points in the code to avoid overlogging, which can negatively impact performance. In most cases, the performance impact is minor, but it is still good to be mindful.
 
 [Main Menu](../README.md#quick-links--optimisations) | [Next - Coming Soon](../README.md#quick-links--optimisations)
+
+### 6. Use structured logging
+
+Log context, not just messages.
+
+```ts
+console.error('Dependency call failed', {
+  service: 'payments',
+  timeoutMs: 3000,
+  requestId: process.env.AWS_REQUEST_ID,
+});
+```
+
+This improves:
+
+- CloudWatch Insights queries
+
+- Correlation across services
+
+- Alert accuracy

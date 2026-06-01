@@ -2,6 +2,12 @@
 
 [Main Menu](../README.md#quick-links--optimisations) | [Next - Local Simulation](./local-simulation.md)
 
+Catching errors is often left to the last minute, franticaly trying to make the code production ready, or worse debugging an issue idenfitied.
+
+Aleviating as much complex debugging as possible, thinking about catching errors while writing the code will save time and make enterprise applications more robust.
+
+Timeout handling prevents the code during runtime from executing indefinitely or longer than necessary. A Lambda timeout is a catch all - not a silver bullet. Each external call to third-party APIs should be limited where possible.
+
 ## Why it matters
 
 - Prevents silent or partial failures
@@ -48,9 +54,19 @@ DB query timeout: 2–4s
 
 This ensures errors are returned gracefully instead of being cut off.
 
+```tf
+resource "aws_lambda_function" "handler" {
+  function_name = "example-handler"
+  timeout     = 10
+  ...
+}
+```
+
 ### 3. Use explicit, typed errors
 
 Prefer domain and application-level error types over generic exceptions.
+
+At a base level:
 
 ```ts
 export class AppError extends Error {
@@ -64,84 +80,32 @@ export class AppError extends Error {
 }
 ```
 
-Examples:
-
-- `VALIDATION_ERROR`
-- `DEPENDENCY_TIMEOUT`
-- `NOT_FOUND`
-- `UNAUTHORISED`
+Alternatively use a library already built for Error Typing.
 
 ### 4. Centralise error handling
 
-Handlers should delegate error formatting to a shared utility.
+Handlers should delegate error formatting to a shared utility. Keep handlers and adapters thin and free of common code.
 
 ```ts
-// application/src/shared/error-handler.ts
-import { AppError } from './app-error';
+...
+ // throwing an error to a cetntralised function
+ catch (error) {
+    let errorMessage = 'Unknown error';
+    if (error instanceof Error) errorMessage = error.message;
 
-export function handleError(error: unknown) {
-  if (error instanceof AppError) {
-    return {
-      statusCode: error.statusCode,
-      body: JSON.stringify({
-        error: error.code,
-        message: error.message,
-      }),
-    };
+    return errorHandler(error);
   }
-
-  console.error('Unhandled error', error);
-
-  return {
-    statusCode: 500,
-    body: JSON.stringify({
-      error: 'INTERNAL_ERROR',
-      message: 'Unexpected error occurred',
-    }),
-  };
-}
+...
 ```
-
-### 5. Keep handlers thin
-
-```ts
-export const handler = async () => {
-  try {
-    return await executeUseCase();
-  } catch (error) {
-    return handleError(error);
-  }
-};
-```
-
-### 6. Use structured logging
-
-Log context, not just messages.
-
-```ts
-console.error('Dependency call failed', {
-  service: 'payments',
-  timeoutMs: 3000,
-  requestId: process.env.AWS_REQUEST_ID,
-});
-```
-
-This improves:
-
-- CloudWatch Insights queries
-
-- Correlation across services
-
-- Alert accuracy
 
 ## Notes
 
 - Central error handler: `application/src/shared/error-handler.ts` (or similar)
-
+- Use typed errors if possible. In this example, `http-errors` NPM package.
 - This pattern works well with retries, DLQs, and Step Functions
 
 ## Testing
 
-Adding error handling and timeout management to your Lambda functions does not significantly improve raw performance. Instead, it enhances the robustness and predictability of your functions, helping to identify issues when execution fails and preventing unnecessarily long runtimes.
+Adding error handling and timeout management to your Lambda functions does not significantly affect raw performance. Instead, it enhances the robustness and predictability of your functions, helping to identify issues when execution fails and preventing unnecessarily long runtimes.
 
 [Main Menu](../README.md#quick-links--optimisations) | [Next - Local Simulation](./local-simulation.md)

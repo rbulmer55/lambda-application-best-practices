@@ -78,7 +78,7 @@ resource "aws_lambda_function" "create_vehicle_booking_function" {
   depends_on       = [aws_iam_role_policy_attachment.function_attach_policy_to_role]
   source_code_hash = data.archive_file.zip_create_vehicle_booking.output_base64sha256
   timeout          = 10
-  memory_size = 128 # Adjust memory size as needed
+  memory_size = 128 
   vpc_config {
     subnet_ids         = [var.vpc_subnet_id]
     security_group_ids = [var.vpc_security_group_id]
@@ -109,7 +109,7 @@ resource "aws_lambda_function" "create_vehicle_booking_function_unminified" {
   depends_on       = [aws_iam_role_policy_attachment.function_attach_policy_to_role]
   source_code_hash = data.archive_file.zip_create_vehicle_booking_unminified.output_base64sha256
   timeout          = 10
-    memory_size = 128
+  memory_size = 128
   vpc_config {
     subnet_ids         = [var.vpc_subnet_id]
     security_group_ids = [var.vpc_security_group_id]
