@@ -37,7 +37,8 @@
       "@use-cases/*": ["./application/src/use-cases/*"],
       "@packages/*": ["./packages/*"],
       "@events/*": ["application/src/events/*"]
-    }
+    },
+    "types": ["jest", "node"]
   },
   "include": ["application/**/*"],
   "exclude": ["node_modules", "cdk.out"]
