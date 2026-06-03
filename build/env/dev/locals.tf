@@ -1,7 +1,7 @@
 locals {
   domain        = "Vehicle"
   domainService = "BookingService"
-  expire_on     = "2026-02-20"
+  expire_on     = "2026-06-20"
   environment   = var.ENVIRONMENT
 
   common_tags = {

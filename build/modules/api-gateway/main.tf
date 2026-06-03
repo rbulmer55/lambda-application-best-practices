@@ -25,7 +25,22 @@ resource "aws_api_gateway_resource" "vehicle_booking_api_booking" {
   path_part   = "booking"
 }
 
-# Method: POST  
+# Resource for /v1/booking-unminified
+resource "aws_api_gateway_resource" "vehicle_booking_api_booking_unminified" {
+  rest_api_id = aws_api_gateway_rest_api.vehicle_booking_api.id
+  parent_id   = aws_api_gateway_resource.api_version.id
+  path_part   = "booking-unminified"
+}
+
+# Method: POST  /unminified
+resource "aws_api_gateway_method" "vehicle_booking_api_post_booking_unminified" {
+  rest_api_id   = aws_api_gateway_rest_api.vehicle_booking_api.id
+  resource_id   = aws_api_gateway_resource.vehicle_booking_api_booking_unminified.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+# Method: POST 
 resource "aws_api_gateway_method" "vehicle_booking_api_post_booking" {
   rest_api_id   = aws_api_gateway_rest_api.vehicle_booking_api.id
   resource_id   = aws_api_gateway_resource.vehicle_booking_api_booking.id
@@ -43,6 +58,16 @@ resource "aws_api_gateway_integration" "vehicle_booking_api_post_booking_integra
   uri                     = var.create_vehicle_booking_lambda_arn
 }
 
+resource "aws_api_gateway_integration" "vehicle_booking_api_post_booking_unminified_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.vehicle_booking_api.id
+  resource_id             = aws_api_gateway_resource.vehicle_booking_api_booking_unminified.id
+  http_method             = aws_api_gateway_method.vehicle_booking_api_post_booking_unminified.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.create_vehicle_booking_unminified_lambda_arn
+}
+
+
 
 
 # Deployment and stage  
@@ -53,7 +78,9 @@ resource "aws_api_gateway_deployment" "vehicle_booking_api_deployment" {
       aws_api_gateway_resource.vehicle_booking_api_booking.id,
       aws_api_gateway_method.vehicle_booking_api_post_booking.id,
       aws_api_gateway_integration.vehicle_booking_api_post_booking_integration.id,
-
+      aws_api_gateway_resource.vehicle_booking_api_booking_unminified.id,
+      aws_api_gateway_method.vehicle_booking_api_post_booking_unminified.id,
+      aws_api_gateway_integration.vehicle_booking_api_post_booking_unminified_integration.id,
     ]))
   }
 
@@ -62,7 +89,8 @@ resource "aws_api_gateway_deployment" "vehicle_booking_api_deployment" {
   }
 
   depends_on = [
-    aws_api_gateway_integration.vehicle_booking_api_post_booking_integration
+    aws_api_gateway_integration.vehicle_booking_api_post_booking_integration,
+    aws_api_gateway_integration.vehicle_booking_api_post_booking_unminified_integration
   ]
 }
 
@@ -82,3 +110,10 @@ resource "aws_lambda_permission" "apigw_post_booking_permission" {
   source_arn    = "arn:aws:execute-api:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.vehicle_booking_api.id}/*"
 }
 
+resource "aws_lambda_permission" "apigw_post_booking_unminified_permission" {
+  statement_id  = "AllowAPIGatewayInvokeVehicleBookingServicePostBookingUnminified"
+  action        = "lambda:InvokeFunction"
+  function_name = var.create_vehicle_booking_unminified_lambda_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "arn:aws:execute-api:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.vehicle_booking_api.id}/*"
+}

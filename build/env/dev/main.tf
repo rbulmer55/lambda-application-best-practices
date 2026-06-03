@@ -71,8 +71,10 @@ module "vehicle_booking_rest_api" {
   /**
   * The ARNs and Names of the Lambda functions for the API Gateway integration methods
   */
-  create_vehicle_booking_lambda_arn  = module.create_vehicle_booking_function.invoke_arn
-  create_vehicle_booking_lambda_name = module.create_vehicle_booking_function.function_name
+  create_vehicle_booking_lambda_arn             = module.create_vehicle_booking_function.invoke_arn
+  create_vehicle_booking_lambda_name            = module.create_vehicle_booking_function.function_name
+  create_vehicle_booking_unminified_lambda_arn  = module.create_vehicle_booking_function.invoke_arn_unminified
+  create_vehicle_booking_unminified_lambda_name = module.create_vehicle_booking_function.function_name_unminified
 
   tags = local.common_tags
 
