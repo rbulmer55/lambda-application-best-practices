@@ -12,8 +12,9 @@ let cachedDb: Db | null = null;
 const defaultConnOptions: MongoClientOptions = {
   // eg: maxPoolSize: 10, ssl: true, etc.
   maxPoolSize: 10,
-  minPoolSize: 1,
-  waitQueueTimeoutMS: 1000,
+  minPoolSize: 0, // set to 0 so Lambda doesn't stall during initialization handshakes
+  waitQueueTimeoutMS: 10000, // set to 10 seconds to allow IAM handshakes to complete
+  connectTimeoutMS: 10000,
 };
 
 export async function getMongoDb(options?: MongoClientOptions): Promise<Db> {
@@ -24,8 +25,13 @@ export async function getMongoDb(options?: MongoClientOptions): Promise<Db> {
   const awsCredentialProvider = fromTemporaryCredentials({
     params: {
       RoleArn: accessRoleArn,
-      RoleSessionName: 'HealthCheckServiceConnection',
+      RoleSessionName: 'VehicleBookingServiceConnection',
     },
+  });
+
+  logger.info('Obtained temporary AWS credentials for MongoDB connection', {
+    accessRoleArn,
+    provider: JSON.stringify(awsCredentialProvider),
   });
 
   /**
@@ -34,9 +40,7 @@ export async function getMongoDb(options?: MongoClientOptions): Promise<Db> {
    internal_project_id is an Atlas internal 5 character unique string
    for example {myatlascluster-pl-0.a0bc0}.mongodb.net
   */
-  const mongodbUrl = new URL(
-    `mongodb+srv://${clusterHost}/?authMechanism=MONGODB-AWS&authSource=%24external`,
-  );
+  const mongodbUrl = `${clusterHost}/?authMechanism=MONGODB-AWS&authSource=%24external`;
 
   cachedClient = new MongoClient(mongodbUrl.toString(), {
     ...defaultConnOptions,

@@ -1,0 +1,63 @@
+config:
+  target: '{{ $env.API_URL }}'
+
+  environments:
+    minified:
+      phases:
+        - duration: 30
+          arrivalRate: 2
+          name: 'Warm-up phase (Minified)'
+        - duration: 60
+          arrivalRate: 2
+          rampTo: 15
+          name: 'Ramp-up phase (Minified)'
+        - duration: 60
+          arrivalRate: 15
+          name: 'Sustained load phase (Minified)'
+      # Define environment-specific variables here
+      variables:
+        bookingPath: '/dev/v1/booking'
+
+    unminified:
+      phases:
+        - duration: 30
+          arrivalRate: 2
+          name: 'Warm-up phase (Unminified)'
+        - duration: 60
+          arrivalRate: 2
+          rampTo: 15
+          name: 'Ramp-up phase (Unminified)'
+        - duration: 60
+          arrivalRate: 15
+          name: 'Sustained load phase (Unminified)'
+      # Define environment-specific variables here
+      variables:
+        bookingPath: '/dev/v1/booking-unminified'
+
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+
+scenarios:
+  - name: 'Submit Vehicle Booking'
+    flow:
+      - post:
+          url: '{{ bookingPath }}'
+          json:
+            userId: 'usr_2026_prod_99x'
+            startDate: '2026-06-15T09:00:00Z'
+            endDate: '2026-06-15T17:00:00Z'
+            servicePlanId: 'plan_gold_premium'
+            vehicleDetails:
+              make: 'Tesla'
+              model: 'Model Y'
+              year: 2024
+              fuelType: 'ELECTRIC'
+              mileage: 18500
+              warrantyId: 'warr_ext_5521'
+            bookingOptions:
+              oilService: false
+              brakesCheck: true
+              tireRotation: true
+              clutchInspection: false
+              washAndVac: true

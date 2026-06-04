@@ -19,7 +19,6 @@ EOF
 }
 
 resource "aws_iam_policy" "create_vehicle_booking_lambda_role_policy" {
-
   name        = "${var.domain}-${var.domainService}-${var.environment}-fn-policy-CreateVehBooking-${var.expiry_date}"
   path        = "/"
   description = "AWS IAM Policy for managing the aws lambda role"
@@ -50,8 +49,16 @@ resource "aws_iam_policy" "create_vehicle_booking_lambda_role_policy" {
         "Action": [  
           "sts:AssumeRole",  
           "sts:GetCallerIdentity"  
-        ] ,
+        ],
         "Resource": "*"  
+    },
+    {
+        "Sid": "AllowEventBridgePutEvents",
+        "Effect": "Allow",
+        "Action": [
+            "events:PutEvents"
+        ],
+        "Resource": "*"
     }
  ]
 }
@@ -65,8 +72,8 @@ resource "aws_iam_role_policy_attachment" "function_attach_policy_to_role" {
 
 data "archive_file" "zip_create_vehicle_booking" {
   type        = "zip"
-  source_file = "${path.module}/../../dist/create-vehicle-booking.lambda.js"
-  output_path = "${path.module}/create-vehicle-booking.lambda.zip"
+  source_file = "${path.module}/../../dist/create-vehicle-booking-lambda.js"
+  output_path = "${path.module}/create-vehicle-booking-lambda.zip"
 }
 
 resource "aws_lambda_function" "create_vehicle_booking_function" {
@@ -78,7 +85,7 @@ resource "aws_lambda_function" "create_vehicle_booking_function" {
   depends_on       = [aws_iam_role_policy_attachment.function_attach_policy_to_role]
   source_code_hash = data.archive_file.zip_create_vehicle_booking.output_base64sha256
   timeout          = 10
-  memory_size = 128 
+  memory_size      = 128
   vpc_config {
     subnet_ids         = [var.vpc_subnet_id]
     security_group_ids = [var.vpc_security_group_id]
@@ -86,8 +93,13 @@ resource "aws_lambda_function" "create_vehicle_booking_function" {
   environment {
     variables = {
       DB_ACCESS_ROLE_ARN : var.database_access_role_arn
-      DB_NAME : var.domain
+      DB_NAME : var.database_name
       DB_CLUSTER_HOST_SRV : var.database_host
+      VEH_EVENT_BUS_NAME : var.vehicle_event_bus
+      DOMAIN : var.domain
+      SERVICE : var.domainService
+      STAGE : var.environment
+      AWS_STS_REGIONAL_ENDPOINTS : "regional"
     }
   }
   tags = var.tags
@@ -96,8 +108,8 @@ resource "aws_lambda_function" "create_vehicle_booking_function" {
 ### Unminified version for testing purposes
 data "archive_file" "zip_create_vehicle_booking_unminified" {
   type        = "zip"
-  source_file = "${path.module}/../../dist-unminified/create-vehicle-booking.lambda.js"
-  output_path = "${path.module}/create-vehicle-booking-unminified.lambda.zip"
+  source_file = "${path.module}/../../dist-unminified/create-vehicle-booking-lambda.js"
+  output_path = "${path.module}/create-vehicle-booking-unminified-lambda.zip"
 }
 
 resource "aws_lambda_function" "create_vehicle_booking_function_unminified" {
@@ -109,7 +121,7 @@ resource "aws_lambda_function" "create_vehicle_booking_function_unminified" {
   depends_on       = [aws_iam_role_policy_attachment.function_attach_policy_to_role]
   source_code_hash = data.archive_file.zip_create_vehicle_booking_unminified.output_base64sha256
   timeout          = 10
-  memory_size = 128
+  memory_size      = 128
   vpc_config {
     subnet_ids         = [var.vpc_subnet_id]
     security_group_ids = [var.vpc_security_group_id]
@@ -117,12 +129,14 @@ resource "aws_lambda_function" "create_vehicle_booking_function_unminified" {
   environment {
     variables = {
       DB_ACCESS_ROLE_ARN : var.database_access_role_arn
-      DB_NAME : var.domain
+      DB_NAME : var.database_name
       DB_CLUSTER_HOST_SRV : var.database_host
+      VEH_EVENT_BUS_NAME : var.vehicle_event_bus
+      DOMAIN : var.domain
+      SERVICE : var.domainService
+      STAGE : var.environment
+      AWS_STS_REGIONAL_ENDPOINTS : "regional"
     }
   }
   tags = var.tags
-
-
-  
-}       
+}

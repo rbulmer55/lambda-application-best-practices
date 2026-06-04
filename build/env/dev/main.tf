@@ -42,6 +42,14 @@ module "vehicle_booking_vpc" {
   depends_on = [module.vehicle_booking_database]
 }
 
+module "vehicle_booking_event_bus" {
+  source      = "../../modules/eventbridge"
+  environment = local.environment
+  tags        = local.common_tags
+
+  depends_on = []
+}
+
 
 module "create_vehicle_booking_function" {
   environment              = local.environment
@@ -55,10 +63,12 @@ module "create_vehicle_booking_function" {
   vpc_security_group_id    = module.vehicle_booking_vpc.vpc_security_group_id
   database_host            = module.vehicle_booking_database.cluster_private_srv
   database_access_role_arn = module.vehicle_booking_role.role_arn
+  database_name            = var.DB_NAME
+  vehicle_event_bus        = module.vehicle_booking_event_bus.vehicle_event_bus_name
 
   tags = local.common_tags
 
-  depends_on = [module.vehicle_booking_vpc]
+  depends_on = [module.vehicle_booking_vpc, module.vehicle_booking_event_bus]
 }
 
 

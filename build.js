@@ -6,8 +6,9 @@ const sharedConfig = {
   bundle: true,
   minify: true,
   external: ['aws-sdk'],
-  sourcemap: false,
+  sourcemap: true,
   treeShaking: true,
+  keepNames: true,
 };
 
 build({

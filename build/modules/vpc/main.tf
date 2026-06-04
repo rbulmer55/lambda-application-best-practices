@@ -63,6 +63,7 @@ resource "aws_vpc_endpoint" "vehicle_booking_service_atlas_endpoint" {
   subnet_ids          = [aws_subnet.vehicle_booking_service_private_subnet[0].id]
   security_group_ids  = [aws_security_group.vehicle_booking_service_vpc_sg.id]
   private_dns_enabled = false
+
   tags = merge(var.tags, {
     Name = "${var.domain}-${var.domainService}-mongodb-atlas-endpoint"
   })
@@ -83,7 +84,21 @@ resource "aws_vpc_endpoint" "vehicle_booking_service_sts_endpoint" {
   subnet_ids          = [aws_subnet.vehicle_booking_service_private_subnet[0].id]
   security_group_ids  = [aws_security_group.vehicle_booking_service_vpc_sg.id]
   private_dns_enabled = true
+
   tags = merge(var.tags, {
     Name = "${var.domain}-${var.domainService}-sts-endpoint"
+  })
+}
+
+resource "aws_vpc_endpoint" "vehicle_booking_service_eventbridge_endpoint" {
+  vpc_id              = aws_vpc.vehicle_booking_service_vpc.id
+  service_name        = "com.amazonaws.${data.aws_region.current.id}.events"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = [aws_subnet.vehicle_booking_service_private_subnet[0].id]
+  security_group_ids  = [aws_security_group.vehicle_booking_service_vpc_sg.id]
+  private_dns_enabled = true
+
+  tags = merge(var.tags, {
+    Name = "${var.domain}-${var.domainService}-eventbridge-endpoint"
   })
 }

@@ -12,6 +12,7 @@ import {
   createVehicleBookingEventAdapter,
 } from '@adapters/secondary/create-vehicle-booking';
 import { ServiceMetadata } from '@shared/types/service-metadata';
+import { logger } from '@shared/index';
 
 /**
  *
@@ -30,6 +31,7 @@ export async function createBookingUseCase(
   // persist booking - secondary adapter
   const createdBooking: VehicleBooking =
     await createVehicleBookingDatabaseAdapter(booking);
+
   // publish event - secondary adapter
   await createVehicleBookingEventAdapter(createdBooking, metadata);
 

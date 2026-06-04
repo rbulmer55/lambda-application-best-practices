@@ -13,9 +13,9 @@ export function schemaValidator(
 
   addFormats(ajv);
   addKeywords(ajv);
-  ajv.addSchema(schema);
 
-  const valid = ajv.validate(schema, body);
+  const validate = ajv.compile(schema);
+  const valid = validate(body);
 
   if (!valid) {
     const errorMessage = JSON.stringify(ajv.errors);

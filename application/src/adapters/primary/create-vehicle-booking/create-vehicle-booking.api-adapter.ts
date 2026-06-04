@@ -48,7 +48,15 @@ export const createVehicleBookingAdapter = async (
     // Validate API request
     const { body } = event;
     if (!body) throw new ValidationError('no payload body');
+
     const payload = JSON.parse(body) as VehicleBookingRequestDTO;
+
+    logger.info('Received create vehicle booking request', {
+      correlationId: metadata.correlationId,
+      causationId: metadata.causationId,
+      payload: JSON.stringify(payload),
+    });
+
     schemaValidator(VehicleBookingRequestSchema, payload);
 
     // Execute use case

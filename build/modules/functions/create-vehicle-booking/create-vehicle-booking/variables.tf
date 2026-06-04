@@ -23,6 +23,16 @@ variable "database_access_role_arn" {
   type        = string
 }
 
+variable "database_name" {
+  description = "The name of the database to create in MongoDB Atlas"
+  type        = string
+}
+
+variable "vehicle_event_bus" {
+  description = "The name of the event bus to publish to"
+  type        = string
+}
+
 variable "vpc_security_group_id" {
   description = "VPC Security Group Id"
   type        = string

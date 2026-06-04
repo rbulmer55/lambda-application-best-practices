@@ -13,7 +13,7 @@ output "cluster_name" {
 }
 
 output "cluster_private_srv" {
-  value = mongodbatlas_cluster.cluster.connection_strings[0].private_srv
+  value = mongodbatlas_cluster.cluster.connection_strings[0].private_endpoint[0].srv_connection_string
 }
 
 output "cluster_project_id" {

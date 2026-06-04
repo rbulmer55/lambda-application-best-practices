@@ -8,6 +8,11 @@ variable "ENVIRONMENT" {
   }
 }
 
+variable "DB_NAME" {
+  type        = string
+  description = "The name of the database to create in MongoDB Atlas"
+}
+
 variable "MONGODB_ATLAS_ORG_ID" {
   type        = string
   description = "MongoDB Atlas Organization ID"

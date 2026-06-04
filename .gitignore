@@ -36,6 +36,6 @@ crash.*.log
 *.zip
 
 .env*
-dist
+dist*
 !build.js
 !.env
