@@ -14,7 +14,7 @@ Smaller deployment packages:
 
 - Lower upload/download time during deploys
 
-- **TODO** Decrease memory usage in serverless runtimes
+- Decrease memory usage in serverless runtimes
 
 ## Recommendations
 
@@ -87,8 +87,8 @@ build({
 - **minify**, to rebuild an executable file with with in a storage optimised form.
 - **bundle**, to pull in dependencies used in the code
 - **external**, to prevent bundling duplicate dependencies that are already part of the runtime environment.
-- **sourcemap**,**TODO**
-- **treeShaking**,**TODO**
+- **sourcemap**, to generate a companion file that maps optimised or minified code back to the original source lines, enabling readable debugging and accurate error tracing in production
+- **treeShaking**, to enable an optimisation process that analyses the code's import/export statements to detect and remove dead or unused code before generating the final bundle
 
 ## Testing
 
