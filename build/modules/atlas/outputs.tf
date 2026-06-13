@@ -13,9 +13,12 @@ output "cluster_name" {
 }
 
 output "cluster_private_srv" {
-  value = mongodbatlas_cluster.cluster.connection_strings[0].private_endpoint[0].srv_connection_string
+  value = coalesce(
+    try(mongodbatlas_cluster.cluster.connection_strings[0].private_endpoint[0].srv_connection_string, null),
+    mongodbatlas_cluster.cluster.connection_strings[0].standard_srv
+  )
+  description = "The cluster Private SRV connection string if available; otherwise falls back to the Standard SRV."
 }
-
 output "cluster_project_id" {
   value = mongodbatlas_cluster.cluster.project_id
 }

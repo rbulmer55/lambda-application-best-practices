@@ -1,14 +1,17 @@
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 
-
-
 resource "aws_api_gateway_rest_api" "vehicle_booking_api" {
   name        = "${var.domain}-${var.domainService}-${var.environment}-api"
   description = var.api_description
   tags = merge(var.tags, {
     Name = "${var.domain}-${var.domainService}-${var.environment}-APIGateway"
   })
+}
+
+resource "aws_cloudwatch_log_group" "api_gw_access_logs" {
+  name              = "/aws/apigateway/${aws_api_gateway_rest_api.vehicle_booking_api.name}-access-logs"
+  retention_in_days = 7
 }
 
 # Resource for /v1  
@@ -98,8 +101,48 @@ resource "aws_api_gateway_stage" "vehicle_booking_api_stage" {
   deployment_id = aws_api_gateway_deployment.vehicle_booking_api_deployment.id
   rest_api_id   = aws_api_gateway_rest_api.vehicle_booking_api.id
   stage_name    = lower(var.environment)
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_gw_access_logs.arn
+    format = jsonencode({
+      requestId               = "$context.requestId",
+      sourceIp                = "$context.identity.sourceIp",
+      caller                  = "$context.identity.caller",
+      user                    = "$context.identity.user",
+      requestTime             = "$context.requestTime",
+      httpMethod              = "$context.httpMethod",
+      resourcePath            = "$context.resourcePath",
+      status                  = "$context.status",
+      protocol                = "$context.protocol",
+      responseLength          = "$context.responseLength",
+      integrationStatus       = "$context.integration.status",
+      integrationLatency      = "$context.integration.latency",
+      integrationErrorMessage = "$context.integration.errorMessage",
+      errorResponseType       = "$context.error.responseType",
+      errorMessage            = "$context.error.message"
+    })
+  }
+
+  depends_on = [
+    aws_api_gateway_account.global
+  ]
 }
 
+resource "aws_api_gateway_method_settings" "all" {
+  rest_api_id = aws_api_gateway_rest_api.vehicle_booking_api.id
+  stage_name  = aws_api_gateway_stage.vehicle_booking_api_stage.stage_name
+  method_path = "*/*" # Enforces logging for all paths and methods
+
+  settings {
+    logging_level      = "INFO" # Captures routing paths, authorizers, and invocation steps
+    data_trace_enabled = true   # Logs full request/response bodies (Disable in Prod if PII is sensitive)
+    metrics_enabled    = true
+  }
+
+  depends_on = [
+    aws_api_gateway_account.global
+  ]
+}
 
 # Add permission for API Gateway to execute the Lambda functions
 resource "aws_lambda_permission" "apigw_post_booking_permission" {
@@ -116,4 +159,31 @@ resource "aws_lambda_permission" "apigw_post_booking_unminified_permission" {
   function_name = var.create_vehicle_booking_unminified_lambda_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "arn:aws:execute-api:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.vehicle_booking_api.id}/*"
+}
+
+
+resource "aws_api_gateway_account" "global" {
+  cloudwatch_role_arn = aws_iam_role.api_gw_cloudwatch.arn
+}
+
+resource "aws_iam_role" "api_gw_cloudwatch" {
+  name = "${var.domain}-${var.environment}-apigw-cloudwatch-global"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "apigateway.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "api_gw_cloudwatch" {
+  role       = aws_iam_role.api_gw_cloudwatch.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
 }
